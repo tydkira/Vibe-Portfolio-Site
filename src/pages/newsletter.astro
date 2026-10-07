@@ -1,7 +1,14 @@
 ---
 /**
  * Newsletter page (/newsletter) — the full pitch.
- * This is the main conversion page: explain the value, then ask for the email.
+ *
+ * Page order (keep this intentional):
+ * 1. Headline
+ * 2. What the newsletter is
+ * 3. How often it's sent
+ * 4. What readers get
+ * 5. Placeholder sample issue
+ * 6. Signup form
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SignupForm from "../components/SignupForm.astro";
@@ -13,70 +20,77 @@ import SignupForm from "../components/SignupForm.astro";
 >
 	<section class="section">
 		<div class="container pitch">
+			{/* 1. Headline */}
 			<span class="eyebrow">Movie newsletter</span>
 			<h1 class="animate-rise">Better movies. Fewer tabs.</h1>
-			<p class="lede animate-rise-delay">
-				A short weekly email with films worth your time — what to watch, why it
-				works, and when to skip. Written for people who love movies but hate
-				endless scroll.
-			</p>
 
-			<div class="pitch__form animate-fade">
-				<SignupForm id="newsletter-page-signup" heading="Subscribe free" />
+			{/* 2. What the newsletter is */}
+			<div class="pitch-block animate-rise-delay">
+				<h2>What this is</h2>
+				<p>
+					A short email about films worth your time — what to watch, why it
+					works, and when to skip. Written like a trusted friend, not an
+					algorithm dump or a spoiler-heavy recap.
+				</p>
 			</div>
-		</div>
-	</section>
 
-	<section class="section section--tight">
-		<div class="container pitch-grid">
-			<div>
-				<h2>What you get</h2>
+			{/* 3. How often it's sent */}
+			<div class="pitch-block">
+				<h2>How often</h2>
+				<p>
+					<strong>Once a week</strong> — usually Friday morning — so you have
+					a plan before the weekend. No daily drip. No surprise blasts.
+				</p>
+			</div>
+
+			{/* 4. What readers get */}
+			<div class="pitch-block">
+				<h2>What readers get</h2>
 				<ul class="check-list">
 					<li>3–5 film picks in a skimmable format</li>
 					<li>A mix of new releases and rewatchable classics</li>
-					<li>Honest “skip this” notes when hype outruns the movie</li>
-					<li>Delivered weekly — short enough to read with coffee</li>
+					<li>Honest “skip this” notes when the hype outruns the movie</li>
+					<li>Just enough context to decide — without spoiling the fun</li>
 				</ul>
 			</div>
-			<div>
-				<h2>Who it is for</h2>
-				<p>
-					Curious viewers who want a trusted friend in their inbox — not a
-					recap factory, not a spoiler mine, and not a listicle farm.
+
+			{/* 5. Placeholder sample issue — replace with a real issue later */}
+			<div class="pitch-block sample-issue">
+				<h2>Sample issue</h2>
+				<p class="sample-issue__note">
+					Placeholder — swap this block for a real past issue (or a screenshot)
+					when you have one.
 				</p>
-				<p>
-					If you have ever opened twelve tabs of “best movies on streaming”
-					and closed them all still undecided, this is for you.
-				</p>
+				<article class="sample-issue__card" aria-label="Sample newsletter issue">
+					<p class="sample-issue__meta">Issue #00 · Example week</p>
+					<h3>Three screens, one deep cut, one skip</h3>
+					<ul>
+						<li>
+							<strong>Friday pick:</strong> A crowd-pleaser that still has a
+							pulse — easy to start, hard to pause.
+						</li>
+						<li>
+							<strong>Deep cut:</strong> An under-seen title that rewards a
+							little curiosity.
+						</li>
+						<li>
+							<strong>The skip:</strong> A hyped release that may not be worth
+							your evening.
+						</li>
+					</ul>
+					<p class="sample-issue__footer">
+						…plus a short “why it works” note for each pick. That’s the whole email.
+					</p>
+				</article>
 			</div>
-		</div>
-	</section>
 
-	<section class="section">
-		<div class="container">
-			<h2>What a typical issue covers</h2>
-			<ol class="issue-list">
-				<li>
-					<strong>The Friday pick</strong>
-					<span>One film I would put on tonight without overthinking it.</span>
-				</li>
-				<li>
-					<strong>The deep cut</strong>
-					<span>Something under-seen that rewards a little curiosity.</span>
-				</li>
-				<li>
-					<strong>The skip</strong>
-					<span>A popular title that may not be worth your evening.</span>
-				</li>
-			</ol>
-
-			<div class="closing-signup">
-				<h2>Ready when you are</h2>
+			{/* 6. Signup form — conversion after the pitch */}
+			<div class="pitch__form animate-fade">
+				<h2>Subscribe free</h2>
 				<p class="lede">
-					Free forever. Unsubscribe in one click. No spam, no resale of your email.
+					One short email a week. No spam. Unsubscribe anytime.
 				</p>
-				{/* Second form instance on this page for people who scroll the whole pitch */}
-				<SignupForm id="newsletter-closing-signup" />
+				<SignupForm id="newsletter-page-signup" />
 			</div>
 		</div>
 	</section>
@@ -87,24 +101,17 @@ import SignupForm from "../components/SignupForm.astro";
 		max-width: 40rem;
 	}
 
-	.pitch__form {
-		margin-top: var(--space-lg);
-		padding: var(--space-lg);
-		background: var(--color-surface);
-		border: 1px solid var(--color-border);
-		border-radius: 10px;
+	.pitch h1 {
+		margin-bottom: var(--space-xl);
 	}
 
-	.pitch-grid {
-		display: grid;
-		gap: var(--space-xl);
+	.pitch-block {
+		margin-bottom: var(--space-xl);
 	}
 
-	@media (min-width: 760px) {
-		.pitch-grid {
-			grid-template-columns: 1fr 1fr;
-			gap: var(--space-2xl);
-		}
+	.pitch-block h2 {
+		font-size: 1.45rem;
+		margin-bottom: var(--space-sm);
 	}
 
 	.check-list {
@@ -117,32 +124,65 @@ import SignupForm from "../components/SignupForm.astro";
 		margin-top: 0.55rem;
 	}
 
-	.issue-list {
-		list-style: none;
-		margin: 0 0 var(--space-xl);
-		padding: 0;
-		border-top: 1px solid var(--color-border);
+	.sample-issue__note {
+		font-size: 0.95rem;
+		font-style: italic;
 	}
 
-	.issue-list li {
-		display: grid;
-		gap: 0.25rem;
-		padding: var(--space-md) 0;
-		border-bottom: 1px solid var(--color-border);
+	/* Simple bordered preview — not a marketing “card grid,” just a sample frame */
+	.sample-issue__card {
+		padding: var(--space-lg);
+		background: var(--color-surface);
+		border: 1px solid var(--color-border);
+		border-left: 4px solid var(--color-accent);
+		border-radius: 8px;
 	}
 
-	.issue-list strong {
-		font-family: var(--font-display);
-		font-size: 1.2rem;
-		color: var(--color-ink);
+	.sample-issue__meta {
+		margin: 0 0 var(--space-xs);
+		font-size: 0.85rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--color-accent);
 	}
 
-	.issue-list span {
+	.sample-issue__card h3 {
+		margin-bottom: var(--space-md);
+	}
+
+	.sample-issue__card ul {
+		margin: 0 0 var(--space-md);
+		padding-left: 1.15rem;
 		color: var(--color-ink-muted);
 	}
 
-	.closing-signup {
-		max-width: 28rem;
-		padding-top: var(--space-md);
+	.sample-issue__card li + li {
+		margin-top: 0.55rem;
+	}
+
+	.sample-issue__card strong {
+		color: var(--color-ink);
+	}
+
+	.sample-issue__footer {
+		margin: 0;
+		font-size: 0.95rem;
+	}
+
+	.pitch__form {
+		padding: var(--space-lg);
+		background: var(--color-surface);
+		border: 1px solid var(--color-border);
+		border-radius: 10px;
+	}
+
+	.pitch__form h2 {
+		font-size: 1.45rem;
+		margin-bottom: var(--space-sm);
+	}
+
+	.pitch__form .lede {
+		margin-bottom: var(--space-md);
 	}
 </style>
