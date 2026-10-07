@@ -1,0 +1,348 @@
+/*
+  Global styles for the whole site.
+  We use CSS variables so colors/fonts stay consistent and easy to tweak later.
+*/
+
+/* ---- Design tokens (edit these to change the whole look) ---- */
+:root {
+	/* Atmosphere: cool mist with a warm "projector light" accent */
+	--color-bg: #e8eef2;
+	--color-bg-deep: #d4dee6;
+	--color-surface: #f5f8fa;
+	--color-ink: #1a2430;
+	--color-ink-muted: #4a5a6a;
+	--color-accent: #c45c26;
+	--color-accent-hover: #a34a1c;
+	--color-accent-soft: rgba(196, 92, 38, 0.12);
+	--color-border: rgba(26, 36, 48, 0.12);
+	--color-focus: #1a6b8a;
+	--color-error: #b42318;
+
+	/* Typography */
+	--font-display: "Fraunces", "Georgia", serif;
+	--font-body: "Figtree", "Segoe UI", sans-serif;
+
+	/* Spacing & layout */
+	--space-xs: 0.35rem;
+	--space-sm: 0.75rem;
+	--space-md: 1.25rem;
+	--space-lg: 2rem;
+	--space-xl: 3.5rem;
+	--space-2xl: 5.5rem;
+	--max-width: 68rem;
+	--header-height: 4rem;
+
+	/* Motion */
+	--ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+	--duration: 400ms;
+}
+
+/* ---- Base reset / defaults ---- */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	margin: 0;
+	min-height: 100vh;
+	font-family: var(--font-body);
+	font-size: 1.0625rem;
+	line-height: 1.65;
+	color: var(--color-ink);
+	/* Layered background: soft gradient + faint grain-like dots for atmosphere */
+	background-color: var(--color-bg);
+	background-image:
+		radial-gradient(ellipse 120% 80% at 10% -10%, rgba(196, 92, 38, 0.14), transparent 55%),
+		radial-gradient(ellipse 90% 60% at 100% 0%, rgba(26, 107, 138, 0.12), transparent 50%),
+		radial-gradient(circle at 1px 1px, rgba(26, 36, 48, 0.04) 1px, transparent 0);
+	background-size: auto, auto, 18px 18px;
+	background-attachment: fixed;
+}
+
+img {
+	max-width: 100%;
+	display: block;
+}
+
+a {
+	color: var(--color-accent);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.18em;
+	transition: color var(--duration) var(--ease-out);
+}
+
+a:hover {
+	color: var(--color-accent-hover);
+}
+
+/* Visible keyboard focus for accessibility */
+:focus-visible {
+	outline: 3px solid var(--color-focus);
+	outline-offset: 3px;
+}
+
+/* Skip link: hidden until keyboard users tab to it */
+.skip-link {
+	position: absolute;
+	left: var(--space-md);
+	top: -100%;
+	z-index: 100;
+	padding: var(--space-sm) var(--space-md);
+	background: var(--color-ink);
+	color: var(--color-surface);
+	text-decoration: none;
+	border-radius: 4px;
+}
+
+.skip-link:focus {
+	top: var(--space-sm);
+}
+
+/* ---- Layout helpers ---- */
+.site-shell {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+.site-main {
+	flex: 1;
+	width: 100%;
+}
+
+.container {
+	width: min(100% - 2rem, var(--max-width));
+	margin-inline: auto;
+}
+
+.section {
+	padding-block: var(--space-xl);
+}
+
+.section--tight {
+	padding-block: var(--space-lg);
+}
+
+/* ---- Type ---- */
+h1,
+h2,
+h3 {
+	font-family: var(--font-display);
+	font-weight: 600;
+	line-height: 1.15;
+	letter-spacing: -0.02em;
+	margin: 0 0 var(--space-md);
+}
+
+h1 {
+	font-size: clamp(2.4rem, 5vw, 3.75rem);
+}
+
+h2 {
+	font-size: clamp(1.75rem, 3vw, 2.35rem);
+}
+
+h3 {
+	font-size: 1.35rem;
+}
+
+p {
+	margin: 0 0 var(--space-md);
+	color: var(--color-ink-muted);
+}
+
+.lede {
+	font-size: 1.2rem;
+	max-width: 36rem;
+}
+
+.eyebrow {
+	display: block;
+	font-family: var(--font-body);
+	font-size: 0.85rem;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--color-accent);
+	margin-bottom: var(--space-sm);
+}
+
+/* ---- Buttons ---- */
+.button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.4rem;
+	padding: 0.8rem 1.35rem;
+	font-family: var(--font-body);
+	font-size: 1rem;
+	font-weight: 600;
+	line-height: 1;
+	text-decoration: none;
+	border: 2px solid transparent;
+	border-radius: 6px;
+	cursor: pointer;
+	transition:
+		background-color var(--duration) var(--ease-out),
+		color var(--duration) var(--ease-out),
+		border-color var(--duration) var(--ease-out),
+		transform var(--duration) var(--ease-out);
+}
+
+.button:hover {
+	transform: translateY(-1px);
+}
+
+.button--primary {
+	background: var(--color-accent);
+	color: #fff;
+}
+
+.button--primary:hover {
+	background: var(--color-accent-hover);
+	color: #fff;
+}
+
+.button--ghost {
+	background: transparent;
+	color: var(--color-ink);
+	border-color: var(--color-border);
+}
+
+.button--ghost:hover {
+	border-color: var(--color-ink);
+	color: var(--color-ink);
+}
+
+.button-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-sm);
+	margin-top: var(--space-lg);
+}
+
+/* ---- Simple list / project rows (not card grids) ---- */
+.project-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	border-top: 1px solid var(--color-border);
+}
+
+.project-list li {
+	border-bottom: 1px solid var(--color-border);
+}
+
+.project-list a {
+	display: grid;
+	gap: 0.35rem;
+	padding: var(--space-md) 0;
+	text-decoration: none;
+	color: inherit;
+	transition: padding-left var(--duration) var(--ease-out);
+}
+
+.project-list a:hover {
+	padding-left: 0.4rem;
+}
+
+.project-list h3 {
+	margin: 0;
+	color: var(--color-ink);
+}
+
+.project-list p {
+	margin: 0;
+}
+
+.project-meta {
+	font-size: 0.9rem;
+	color: var(--color-ink-muted);
+}
+
+.tag-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem;
+	margin-top: 0.35rem;
+}
+
+.tag {
+	font-size: 0.75rem;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--color-ink-muted);
+}
+
+/* ---- Prose (Markdown body content) ---- */
+.prose {
+	max-width: 42rem;
+}
+
+.prose :where(h2, h3) {
+	margin-top: var(--space-lg);
+}
+
+.prose :where(ul, ol) {
+	padding-left: 1.25rem;
+	color: var(--color-ink-muted);
+}
+
+.prose :where(li + li) {
+	margin-top: 0.35rem;
+}
+
+/* ---- Subtle entrance motion ---- */
+@keyframes rise-in {
+	from {
+		opacity: 0;
+		transform: translateY(14px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.animate-rise {
+	animation: rise-in 700ms var(--ease-out) both;
+}
+
+.animate-rise-delay {
+	animation: rise-in 700ms var(--ease-out) 120ms both;
+}
+
+.animate-fade {
+	animation: fade-in 900ms var(--ease-out) 200ms both;
+}
+
+/* Respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}

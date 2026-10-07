@@ -1,0 +1,125 @@
+---
+/**
+ * Shared site header: brand name + main navigation.
+ * Used once inside BaseLayout so every page gets the same nav.
+ */
+import { SITE_NAME } from "../constants/site";
+
+// Current path, e.g. "/about" — used to highlight the active link
+const currentPath = Astro.url.pathname;
+
+const navLinks = [
+	{ href: "/", label: "Home" },
+	{ href: "/about", label: "About" },
+	{ href: "/projects", label: "Projects" },
+	{ href: "/newsletter", label: "Newsletter" },
+];
+
+/** Returns true when this nav item matches the page we are on */
+function isActive(href: string): boolean {
+	if (href === "/") {
+		return currentPath === "/";
+	}
+	return currentPath.startsWith(href);
+}
+---
+
+<header class="site-header">
+	<div class="container site-header__inner">
+		{/* Brand is a link home — and large enough to feel like the site identity */}
+		<a class="site-logo" href="/">{SITE_NAME}</a>
+
+		<nav class="site-nav" aria-label="Primary">
+			<ul>
+				{
+					navLinks.map((link) => (
+						<li>
+							<a
+								href={link.href}
+								aria-current={isActive(link.href) ? "page" : undefined}
+							>
+								{link.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+	</div>
+</header>
+
+<style>
+	.site-header {
+		position: sticky;
+		top: 0;
+		z-index: 50;
+		height: var(--header-height);
+		/* Slight blur so content scrolling under the header still feels soft */
+		background: rgba(232, 238, 242, 0.85);
+		backdrop-filter: blur(10px);
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.site-header__inner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		height: 100%;
+		gap: var(--space-md);
+	}
+
+	.site-logo {
+		font-family: var(--font-display);
+		font-size: 1.35rem;
+		font-weight: 600;
+		color: var(--color-ink);
+		text-decoration: none;
+		letter-spacing: -0.02em;
+	}
+
+	.site-logo:hover {
+		color: var(--color-accent);
+	}
+
+	.site-nav ul {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.15rem 1rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.site-nav a {
+		font-size: 0.95rem;
+		font-weight: 500;
+		color: var(--color-ink-muted);
+		text-decoration: none;
+		padding-bottom: 0.15rem;
+		border-bottom: 2px solid transparent;
+		transition:
+			color var(--duration) var(--ease-out),
+			border-color var(--duration) var(--ease-out);
+	}
+
+	.site-nav a:hover,
+	.site-nav a[aria-current="page"] {
+		color: var(--color-ink);
+		border-bottom-color: var(--color-accent);
+	}
+
+	@media (max-width: 560px) {
+		.site-header__inner {
+			flex-direction: column;
+			align-items: flex-start;
+			justify-content: center;
+			padding-block: 0.5rem;
+			height: auto;
+			min-height: var(--header-height);
+		}
+
+		.site-nav ul {
+			gap: 0.15rem 0.85rem;
+		}
+	}
+</style>

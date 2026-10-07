@@ -1,0 +1,165 @@
+---
+/**
+ * Reusable newsletter signup form.
+ *
+ * Used in three places:
+ *   1. Home page
+ *   2. Newsletter page
+ *   3. Site footer (every page)
+ *
+ * There is NO backend yet. The form posts to NEWSLETTER_FORM_ACTION
+ * (see src/constants/site.ts). Swap that constant when you connect
+ * Beehiiv / Kit / Substack / Buttondown.
+ */
+import { NEWSLETTER_FORM_ACTION } from "../constants/site";
+
+interface Props {
+	/** Optional heading shown above the form (footer often omits this) */
+	heading?: string;
+	/** Visual size: "default" for pages, "compact" for the footer */
+	variant?: "default" | "compact";
+	/** Unique id so multiple forms on one page don't clash */
+	id?: string;
+}
+
+const {
+	heading,
+	variant = "default",
+	id = "newsletter-signup",
+} = Astro.props;
+
+const emailFieldId = `${id}-email`;
+---
+
+<div class:list={["signup", `signup--${variant}`]}>
+	{heading && <h2 class="signup__heading">{heading}</h2>}
+
+	{/*
+	  Standard HTML form — no JavaScript submit handling.
+	  When you connect a provider, their endpoint will handle the POST.
+	*/}
+	<form
+		class="signup__form"
+		method="post"
+		action={NEWSLETTER_FORM_ACTION}
+		novalidate
+	>
+		<div class="signup__field">
+			<label for={emailFieldId}>Email address</label>
+			<input
+				id={emailFieldId}
+				name="email"
+				type="email"
+				required
+				autocomplete="email"
+				placeholder="you@example.com"
+				aria-describedby={`${id}-hint ${id}-error`}
+			/>
+			{/* Shown via CSS when the email field is :user-invalid */}
+			<p class="signup__error" id={`${id}-error`} role="alert">
+				Please enter a valid email address.
+			</p>
+		</div>
+
+		<button class="button button--primary" type="submit">
+			Subscribe
+		</button>
+	</form>
+
+	<p class="signup__hint" id={`${id}-hint`}>
+		No spam. Unsubscribe anytime.
+	</p>
+</div>
+
+<style>
+	.signup {
+		width: 100%;
+		max-width: 28rem;
+	}
+
+	.signup--compact {
+		max-width: 22rem;
+	}
+
+	.signup__heading {
+		font-size: 1.35rem;
+		margin-bottom: var(--space-sm);
+	}
+
+	.signup__form {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-sm);
+		align-items: flex-end;
+	}
+
+	.signup__field {
+		flex: 1 1 12rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+	}
+
+	.signup__field label {
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: var(--color-ink);
+	}
+
+	.signup__field input {
+		width: 100%;
+		padding: 0.8rem 0.9rem;
+		font-family: var(--font-body);
+		font-size: 1rem;
+		color: var(--color-ink);
+		background: var(--color-surface);
+		border: 2px solid var(--color-border);
+		border-radius: 6px;
+		transition:
+			border-color var(--duration) var(--ease-out),
+			box-shadow var(--duration) var(--ease-out);
+	}
+
+	.signup__field input::placeholder {
+		color: #8a97a5;
+	}
+
+	/* Accessible focus state */
+	.signup__field input:focus {
+		outline: none;
+		border-color: var(--color-focus);
+		box-shadow: 0 0 0 3px rgba(26, 107, 138, 0.2);
+	}
+
+	/* Accessible error state (activated by :invalid after the user interacts) */
+	.signup__field input:user-invalid {
+		border-color: var(--color-error);
+		box-shadow: 0 0 0 3px rgba(180, 35, 24, 0.15);
+	}
+
+	.signup__field input:user-invalid + .signup__error,
+	.signup__field input:user-invalid ~ .signup__error {
+		display: block;
+	}
+
+	.signup__error {
+		display: none;
+		margin: 0;
+		font-size: 0.85rem;
+		color: var(--color-error);
+	}
+
+	.signup__hint {
+		margin: var(--space-sm) 0 0;
+		font-size: 0.85rem;
+		color: var(--color-ink-muted);
+	}
+
+	.signup--compact .signup__heading {
+		font-size: 1.1rem;
+	}
+
+	.signup--compact .button {
+		padding: 0.75rem 1.1rem;
+	}
+</style>
