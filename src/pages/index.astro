@@ -107,7 +107,7 @@ const projects = (await getCollection("projects", ({ data }) => !data.draft))
 		font-size: clamp(2rem, 4vw, 2.75rem);
 		font-weight: 600;
 		letter-spacing: -0.03em;
-		color: var(--color-ink);
+		color: var(--color-heading);
 		margin: 0 0 var(--space-md);
 	}
 
@@ -115,20 +115,14 @@ const projects = (await getCollection("projects", ({ data }) => !data.draft))
 		margin-bottom: var(--space-md);
 	}
 
-	/* Full-bleed visual plane: warm/cool light wash suggesting a screening room */
+	/* Full-bleed brand yellow plane with a soft warm wash */
 	.hero__atmosphere {
 		position: absolute;
 		inset: 0;
 		z-index: 0;
 		background:
-			linear-gradient(
-				105deg,
-				rgba(245, 248, 250, 0.92) 0%,
-				rgba(245, 248, 250, 0.55) 42%,
-				rgba(196, 92, 38, 0.18) 100%
-			),
-			radial-gradient(ellipse 70% 80% at 85% 40%, rgba(26, 107, 138, 0.28), transparent 60%),
-			linear-gradient(180deg, #cfd9e2 0%, #e8eef2 100%);
+			radial-gradient(ellipse 70% 80% at 85% 40%, rgba(232, 163, 14, 0.35), transparent 60%),
+			linear-gradient(180deg, #e3d054 0%, #d9c64a 100%);
 	}
 
 	/* Soft moving light — presence without noise */
@@ -138,7 +132,7 @@ const projects = (await getCollection("projects", ({ data }) => !data.draft))
 		inset: -20%;
 		background: radial-gradient(
 			circle at 70% 40%,
-			rgba(255, 255, 255, 0.35),
+			rgba(255, 255, 255, 0.28),
 			transparent 45%
 		);
 		animation: drift 14s var(--ease-out) infinite alternate;
