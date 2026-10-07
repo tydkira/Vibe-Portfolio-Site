@@ -1,0 +1,5 @@
+# Cloudflare Pages headers (optional hardening for a static site)
+/
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
