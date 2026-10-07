@@ -166,7 +166,8 @@ h3 {
 	/* Khand file is already Bold — keep weight normal so the browser doesn't fake-bold it */
 	font-weight: 700;
 	line-height: 1.15;
-	letter-spacing: -0.02em;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
 	margin: 0 0 var(--space-md);
 	color: var(--color-heading);
 }
