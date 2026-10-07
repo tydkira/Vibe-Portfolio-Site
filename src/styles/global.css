@@ -3,6 +3,31 @@
   We use CSS variables so colors/fonts stay consistent and easy to tweak later.
 */
 
+/*
+  Local fonts from Fontshare (files live in /public/fonts/).
+  - Khand Bold → headings / logo
+  - Hind Regular → body text
+*/
+@font-face {
+	font-family: "Khand-Bold";
+	src:
+		url("/fonts/Khand-Bold.woff2") format("woff2"),
+		url("/fonts/Khand-Bold.woff") format("woff");
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Hind-Regular";
+	src:
+		url("/fonts/Hind-Regular.woff2") format("woff2"),
+		url("/fonts/Hind-Regular.woff") format("woff");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
 /* ---- Design tokens (edit these to change the whole look) ---- */
 :root {
 	/*
@@ -24,9 +49,9 @@
 	--color-focus: #e3d054;
 	--color-error: #ffb4a9;
 
-	/* Typography — Fraunces (headings) + Figtree (body), self-hosted */
-	--font-display: "Fraunces", "Georgia", serif;
-	--font-body: "Figtree", "Segoe UI", sans-serif;
+	/* Typography — Khand (headings) + Hind (body) */
+	--font-display: "Khand-Bold", "Segoe UI", sans-serif;
+	--font-body: "Hind-Regular", "Segoe UI", sans-serif;
 
 	/* Spacing & layout */
 	--space-xs: 0.35rem;
@@ -138,7 +163,8 @@ h1,
 h2,
 h3 {
 	font-family: var(--font-display);
-	font-weight: 600;
+	/* Khand file is already Bold — keep weight normal so the browser doesn't fake-bold it */
+	font-weight: 700;
 	line-height: 1.15;
 	letter-spacing: -0.02em;
 	margin: 0 0 var(--space-md);
