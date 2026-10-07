@@ -6,25 +6,23 @@
 /* ---- Design tokens (edit these to change the whole look) ---- */
 :root {
 	/*
-	  Brand colors you specified:
-	  - Background: #e3d054
+	  Brand colors:
+	  - Background: #355E3B (forest green)
 	  - Header / heading text: #e8a30e
-	  - Body text: you also listed #e3d054 — that matches the background and
-	    would make paragraphs invisible, so body uses a dark ink instead.
-	    If you meant a dark page with yellow body text, tell me and we will flip it.
+	  - Body text: #e3d054
 	*/
-	--color-bg: #e3d054;
-	--color-bg-deep: #d4c044;
-	--color-surface: #efe08a;
+	--color-bg: #355e3b;
+	--color-bg-deep: #2a4a2f;
+	--color-surface: #3f6b45;
 	--color-heading: #e8a30e;
-	--color-ink: #1f1805;
-	--color-ink-muted: #3d3010;
+	--color-ink: #e3d054;
+	--color-ink-muted: #d4c45a;
 	--color-accent: #e8a30e;
-	--color-accent-hover: #c4890c;
+	--color-accent-hover: #f0b83a;
 	--color-accent-soft: rgba(232, 163, 14, 0.18);
-	--color-border: rgba(31, 24, 5, 0.18);
-	--color-focus: #1f1805;
-	--color-error: #8b1e1e;
+	--color-border: rgba(227, 208, 84, 0.28);
+	--color-focus: #e3d054;
+	--color-error: #ffb4a9;
 
 	/* Typography — Fraunces (headings) + Figtree (body), self-hosted */
 	--font-display: "Fraunces", "Georgia", serif;
@@ -64,10 +62,10 @@ body {
 	line-height: 1.65;
 	color: var(--color-ink);
 	background-color: var(--color-bg);
-	/* Soft warmth on top of the solid brand yellow */
+	/* Soft light on the forest green so the page feels less flat */
 	background-image:
-		radial-gradient(ellipse 100% 70% at 0% 0%, rgba(232, 163, 14, 0.28), transparent 55%),
-		radial-gradient(ellipse 80% 50% at 100% 10%, rgba(255, 255, 255, 0.18), transparent 50%);
+		radial-gradient(ellipse 100% 70% at 0% 0%, rgba(232, 163, 14, 0.16), transparent 55%),
+		radial-gradient(ellipse 80% 50% at 100% 10%, rgba(227, 208, 84, 0.1), transparent 50%);
 	background-attachment: fixed;
 }
 
@@ -100,8 +98,8 @@ a:hover {
 	top: -100%;
 	z-index: 100;
 	padding: var(--space-sm) var(--space-md);
-	background: var(--color-ink);
-	color: var(--color-surface);
+	background: var(--color-heading);
+	color: #1f1805;
 	text-decoration: none;
 	border-radius: 4px;
 }
