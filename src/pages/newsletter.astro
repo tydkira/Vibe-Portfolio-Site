@@ -1,0 +1,148 @@
+---
+/**
+ * Newsletter page (/newsletter) — the full pitch.
+ * This is the main conversion page: explain the value, then ask for the email.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SignupForm from "../components/SignupForm.astro";
+---
+
+<BaseLayout
+	title="Newsletter"
+	description="Subscribe to a short weekly movie newsletter — clear picks, no spam."
+>
+	<section class="section">
+		<div class="container pitch">
+			<span class="eyebrow">Movie newsletter</span>
+			<h1 class="animate-rise">Better movies. Fewer tabs.</h1>
+			<p class="lede animate-rise-delay">
+				A short weekly email with films worth your time — what to watch, why it
+				works, and when to skip. Written for people who love movies but hate
+				endless scroll.
+			</p>
+
+			<div class="pitch__form animate-fade">
+				<SignupForm id="newsletter-page-signup" heading="Subscribe free" />
+			</div>
+		</div>
+	</section>
+
+	<section class="section section--tight">
+		<div class="container pitch-grid">
+			<div>
+				<h2>What you get</h2>
+				<ul class="check-list">
+					<li>3–5 film picks in a skimmable format</li>
+					<li>A mix of new releases and rewatchable classics</li>
+					<li>Honest “skip this” notes when hype outruns the movie</li>
+					<li>Delivered weekly — short enough to read with coffee</li>
+				</ul>
+			</div>
+			<div>
+				<h2>Who it is for</h2>
+				<p>
+					Curious viewers who want a trusted friend in their inbox — not a
+					recap factory, not a spoiler mine, and not a listicle farm.
+				</p>
+				<p>
+					If you have ever opened twelve tabs of “best movies on streaming”
+					and closed them all still undecided, this is for you.
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<h2>What a typical issue covers</h2>
+			<ol class="issue-list">
+				<li>
+					<strong>The Friday pick</strong>
+					<span>One film I would put on tonight without overthinking it.</span>
+				</li>
+				<li>
+					<strong>The deep cut</strong>
+					<span>Something under-seen that rewards a little curiosity.</span>
+				</li>
+				<li>
+					<strong>The skip</strong>
+					<span>A popular title that may not be worth your evening.</span>
+				</li>
+			</ol>
+
+			<div class="closing-signup">
+				<h2>Ready when you are</h2>
+				<p class="lede">
+					Free forever. Unsubscribe in one click. No spam, no resale of your email.
+				</p>
+				{/* Second form instance on this page for people who scroll the whole pitch */}
+				<SignupForm id="newsletter-closing-signup" />
+			</div>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.pitch {
+		max-width: 40rem;
+	}
+
+	.pitch__form {
+		margin-top: var(--space-lg);
+		padding: var(--space-lg);
+		background: var(--color-surface);
+		border: 1px solid var(--color-border);
+		border-radius: 10px;
+	}
+
+	.pitch-grid {
+		display: grid;
+		gap: var(--space-xl);
+	}
+
+	@media (min-width: 760px) {
+		.pitch-grid {
+			grid-template-columns: 1fr 1fr;
+			gap: var(--space-2xl);
+		}
+	}
+
+	.check-list {
+		margin: 0;
+		padding-left: 1.15rem;
+		color: var(--color-ink-muted);
+	}
+
+	.check-list li + li {
+		margin-top: 0.55rem;
+	}
+
+	.issue-list {
+		list-style: none;
+		margin: 0 0 var(--space-xl);
+		padding: 0;
+		border-top: 1px solid var(--color-border);
+	}
+
+	.issue-list li {
+		display: grid;
+		gap: 0.25rem;
+		padding: var(--space-md) 0;
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.issue-list strong {
+		font-family: var(--font-display);
+		font-size: 1.2rem;
+		color: var(--color-ink);
+	}
+
+	.issue-list span {
+		color: var(--color-ink-muted);
+	}
+
+	.closing-signup {
+		max-width: 28rem;
+		padding-top: var(--space-md);
+	}
+</style>

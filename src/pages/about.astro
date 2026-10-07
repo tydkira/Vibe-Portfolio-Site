@@ -1,0 +1,63 @@
+---
+/**
+ * About page (/about)
+ * Educate visitors on who you are — swap the placeholder bio for your own story.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE_NAME } from "../constants/site";
+---
+
+<BaseLayout
+	title="About"
+	description={`About ${SITE_NAME} — background, interests, and what I am working on.`}
+>
+	<section class="section">
+		<div class="container about">
+			<span class="eyebrow">About</span>
+			<h1 class="animate-rise">{SITE_NAME}</h1>
+			<p class="lede animate-rise-delay">
+				I am a beginner-friendly builder learning in public — shipping small web
+				projects and writing about movies along the way.
+			</p>
+
+			<div class="prose">
+				<h2>What I care about</h2>
+				<p>
+					Clear writing. Useful software. Films that stick with you after the
+					credits. I like work that feels intentional — whether that is a tidy
+					portfolio page or a newsletter that respects your time.
+				</p>
+
+				<h2>How I work</h2>
+				<p>
+					I learn by building. This site is part of that: Astro for a fast static
+					site, plain CSS so the design stays understandable, and Markdown files
+					for projects so updating content stays simple.
+				</p>
+
+				<h2>Outside the editor</h2>
+				<p>
+					When I am not coding, I am usually watching something — new releases,
+					comfort rewatches, or whatever a friend insists I “have to see.” Those
+					picks feed the newsletter.
+				</p>
+
+				<p>
+					Want the short version of what I am watching?
+					<a href="/newsletter">Subscribe to the movie newsletter</a>.
+					Or browse <a href="/projects">projects</a> to see what I have made.
+				</p>
+			</div>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.about {
+		max-width: 44rem;
+	}
+
+	.about h1 {
+		margin-bottom: var(--space-md);
+	}
+</style>

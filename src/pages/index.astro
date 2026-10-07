@@ -1,16 +1,182 @@
 ---
+/**
+ * Home page (/)
+ * Goals: introduce who you are, show recent work, and convert to newsletter signup.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SignupForm from "../components/SignupForm.astro";
+import { SITE_NAME } from "../constants/site";
+import { getCollection } from "astro:content";
+
+// Pull published projects, newest first, show just a few on the home page
+const projects = (await getCollection("projects", ({ data }) => !data.draft))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 3);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+	title={SITE_NAME}
+	description="Personal portfolio and movie newsletter from Ty Dunn."
+>
+	{/* ---- Hero: one composition — brand, headline, support, CTAs ---- */}
+	<section class="hero">
+		<div class="container hero__inner">
+			<p class="hero__brand animate-fade">{SITE_NAME}</p>
+			<h1 class="animate-rise">Films worth your Friday night.</h1>
+			<p class="lede animate-rise-delay">
+				I build things on the web and write a short movie newsletter —
+				clear picks, no algorithm noise.
+			</p>
+			<div class="button-row animate-rise-delay">
+				<a class="button button--primary" href="/newsletter">Join the newsletter</a>
+				<a class="button button--ghost" href="/projects">See projects</a>
+			</div>
+		</div>
+		{/* Full-bleed atmospheric plane behind the hero text */}
+		<div class="hero__atmosphere" aria-hidden="true"></div>
+	</section>
+
+	{/* ---- Featured projects ---- */}
+	<section class="section">
+		<div class="container">
+			<span class="eyebrow">Selected work</span>
+			<h2>Recent projects</h2>
+			<p class="lede">A few things I have shipped or am actively shaping.</p>
+
+			<ul class="project-list">
+				{
+					projects.map((project) => (
+						<li>
+							<a href={`/projects/${project.id}`}>
+								<h3>{project.data.title}</h3>
+								<p>{project.data.description}</p>
+								<div class="tag-row">
+									{project.data.tags.map((tag) => (
+										<span class="tag">{tag}</span>
+									))}
+								</div>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+
+			<p style="margin-top: 1.25rem;">
+				<a href="/projects">View all projects →</a>
+			</p>
+		</div>
+	</section>
+
+	{/* ---- Newsletter conversion block ---- */}
+	<section class="section section--signup">
+		<div class="container signup-panel">
+			<div>
+				<span class="eyebrow">Newsletter</span>
+				<h2>One short email. Better movie nights.</h2>
+				<p class="lede">
+					Weekly recommendations with just enough context to decide what to watch —
+					and what to skip.
+				</p>
+			</div>
+			<SignupForm id="home-signup" heading="Subscribe free" />
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.hero {
+		position: relative;
+		/* Fill most of the first viewport under the sticky header */
+		min-height: calc(100vh - var(--header-height));
+		display: flex;
+		align-items: center;
+		overflow: hidden;
+		isolation: isolate;
+	}
+
+	.hero__inner {
+		position: relative;
+		z-index: 1;
+		padding-block: var(--space-2xl);
+		max-width: 40rem;
+	}
+
+	/* Brand as a hero-level signal, not just nav text */
+	.hero__brand {
+		font-family: var(--font-display);
+		font-size: clamp(2rem, 4vw, 2.75rem);
+		font-weight: 600;
+		letter-spacing: -0.03em;
+		color: var(--color-ink);
+		margin: 0 0 var(--space-md);
+	}
+
+	.hero h1 {
+		margin-bottom: var(--space-md);
+	}
+
+	/* Full-bleed visual plane: warm/cool light wash suggesting a screening room */
+	.hero__atmosphere {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		background:
+			linear-gradient(
+				105deg,
+				rgba(245, 248, 250, 0.92) 0%,
+				rgba(245, 248, 250, 0.55) 42%,
+				rgba(196, 92, 38, 0.18) 100%
+			),
+			radial-gradient(ellipse 70% 80% at 85% 40%, rgba(26, 107, 138, 0.28), transparent 60%),
+			linear-gradient(180deg, #cfd9e2 0%, #e8eef2 100%);
+	}
+
+	/* Soft moving light — presence without noise */
+	.hero__atmosphere::after {
+		content: "";
+		position: absolute;
+		inset: -20%;
+		background: radial-gradient(
+			circle at 70% 40%,
+			rgba(255, 255, 255, 0.35),
+			transparent 45%
+		);
+		animation: drift 14s var(--ease-out) infinite alternate;
+	}
+
+	@keyframes drift {
+		from {
+			transform: translate3d(-2%, -1%, 0) scale(1);
+		}
+		to {
+			transform: translate3d(3%, 2%, 0) scale(1.05);
+		}
+	}
+
+	.section--signup {
+		padding-block: var(--space-2xl);
+	}
+
+	.signup-panel {
+		display: grid;
+		gap: var(--space-lg);
+		padding: var(--space-lg);
+		background: var(--color-surface);
+		border: 1px solid var(--color-border);
+		border-radius: 10px;
+	}
+
+	@media (min-width: 800px) {
+		.signup-panel {
+			grid-template-columns: 1.2fr 1fr;
+			align-items: center;
+			padding: var(--space-xl);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.hero__atmosphere::after {
+			animation: none;
+		}
+	}
+</style>
