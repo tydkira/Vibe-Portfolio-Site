@@ -1,0 +1,60 @@
+---
+/**
+ * Projects index (/projects)
+ * Lists every non-draft project from the content collection.
+ * Add a project by creating a new .md file in src/content/projects/.
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const projects = (await getCollection("projects", ({ data }) => !data.draft)).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+/** Format a Date as a readable string, e.g. "Mar 2026" */
+function formatDate(date: Date): string {
+	return date.toLocaleDateString("en-US", {
+		year: "numeric",
+		month: "short",
+	});
+}
+---
+
+<BaseLayout
+	title="Projects"
+	description="Selected projects — websites, writing, and experiments."
+>
+	<section class="section">
+		<div class="container">
+			<span class="eyebrow">Work</span>
+			<h1 class="animate-rise">Projects</h1>
+			<p class="lede animate-rise-delay">
+				Things I have built, written, or experimented with. Each entry is a
+				Markdown file — easy to add later.
+			</p>
+
+			{
+				projects.length === 0 ? (
+					<p>No projects yet. Add a Markdown file in <code>src/content/projects/</code>.</p>
+				) : (
+					<ul class="project-list">
+						{projects.map((project) => (
+							<li>
+								<a href={`/projects/${project.id}`}>
+									<div class="project-meta">{formatDate(project.data.pubDate)}</div>
+									<h3>{project.data.title}</h3>
+									<p>{project.data.description}</p>
+									<div class="tag-row">
+										{project.data.tags.map((tag) => (
+											<span class="tag">{tag}</span>
+										))}
+									</div>
+								</a>
+							</li>
+						))}
+					</ul>
+				)
+			}
+		</div>
+	</section>
+</BaseLayout>

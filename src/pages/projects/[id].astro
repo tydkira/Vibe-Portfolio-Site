@@ -1,0 +1,79 @@
+---
+/**
+ * Individual project page (/projects/some-project-id)
+ *
+ * Astro builds one HTML page per Markdown file in the projects collection.
+ * The [id] in the filename is a dynamic route parameter.
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+
+// Tell Astro which project pages to generate at build time
+export async function getStaticPaths() {
+	const projects = await getCollection("projects", ({ data }) => !data.draft);
+	return projects.map((project) => ({
+		params: { id: project.id },
+		props: { project },
+	}));
+}
+
+const { project } = Astro.props;
+// Turn the Markdown body into HTML we can display
+const { Content } = await render(project);
+
+const formattedDate = project.data.pubDate.toLocaleDateString("en-US", {
+	year: "numeric",
+	month: "long",
+	day: "numeric",
+});
+---
+
+<BaseLayout title={project.data.title} description={project.data.description}>
+	<article class="section">
+		<div class="container project-detail">
+			<p class="project-meta">
+				<a href="/projects">← Projects</a>
+				<span aria-hidden="true"> · </span>
+				<time datetime={project.data.pubDate.toISOString()}>{formattedDate}</time>
+			</p>
+
+			<h1 class="animate-rise">{project.data.title}</h1>
+			<p class="lede animate-rise-delay">{project.data.description}</p>
+
+			{
+				project.data.tags.length > 0 && (
+					<div class="tag-row" style="margin-bottom: 1.5rem;">
+						{project.data.tags.map((tag) => (
+							<span class="tag">{tag}</span>
+						))}
+					</div>
+				)
+			}
+
+			{
+				project.data.url && (
+					<p>
+						<a class="button button--primary" href={project.data.url} rel="noopener noreferrer">
+							View live
+						</a>
+					</p>
+				)
+			}
+
+			<div class="prose">
+				<Content />
+			</div>
+		</div>
+	</article>
+</BaseLayout>
+
+<style>
+	.project-detail {
+		max-width: 44rem;
+	}
+
+	.project-meta a {
+		text-decoration: none;
+		font-weight: 600;
+	}
+</style>
