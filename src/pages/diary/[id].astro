@@ -1,0 +1,100 @@
+---
+/**
+ * Individual diary entry (/diary/some-entry-id)
+ *
+ * Astro builds one HTML page per Markdown file in the diary collection.
+ * The [id] in the filename is a dynamic route parameter.
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+
+// Tell Astro which diary pages to generate at build time
+export async function getStaticPaths() {
+	const entries = await getCollection("diary", ({ data }) => !data.draft);
+	return entries.map((entry) => ({
+		params: { id: entry.id },
+		props: { entry },
+	}));
+}
+
+const { entry } = Astro.props;
+// Turn the Markdown body into HTML we can display
+const { Content } = await render(entry);
+
+const formattedDate = entry.data.watchedDate.toLocaleDateString("en-US", {
+	year: "numeric",
+	month: "long",
+	day: "numeric",
+});
+
+const filmLabel = entry.data.year
+	? `${entry.data.film} (${entry.data.year})`
+	: entry.data.film;
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.description}>
+	<article class="section">
+		<div class="container diary-detail">
+			<p class="diary-meta">
+				<a href="/diary">← Diary</a>
+				<span aria-hidden="true"> · </span>
+				<time datetime={entry.data.watchedDate.toISOString()}>{formattedDate}</time>
+			</p>
+
+			<h1 class="animate-rise">{entry.data.title}</h1>
+			<p class="lede animate-rise-delay">{entry.data.description}</p>
+
+			<p class="diary-film-line">
+				<span class="diary-film-line__label">Watched</span>
+				{filmLabel}
+				{entry.data.where && (
+					<>
+						<span aria-hidden="true"> · </span>
+						{entry.data.where}
+					</>
+				)}
+			</p>
+
+			{
+				entry.data.tags.length > 0 && (
+					<div class="tag-row" style="margin-bottom: 1.5rem;">
+						{entry.data.tags.map((tag) => (
+							<span class="tag">{tag}</span>
+						))}
+					</div>
+				)
+			}
+
+			<div class="prose">
+				<Content />
+			</div>
+		</div>
+	</article>
+</BaseLayout>
+
+<style>
+	.diary-detail {
+		max-width: 44rem;
+	}
+
+	.diary-meta a {
+		text-decoration: none;
+		font-weight: 600;
+	}
+
+	.diary-film-line {
+		margin: 0 0 var(--space-md);
+		font-size: 1.05rem;
+		color: var(--color-ink-muted);
+	}
+
+	.diary-film-line__label {
+		display: inline-block;
+		margin-right: 0.5rem;
+		font-family: var(--font-display);
+		font-size: 0.85rem;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--color-heading);
+	}
+</style>

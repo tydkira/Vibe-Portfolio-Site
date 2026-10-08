@@ -9,6 +9,16 @@ export const SITE_NAME = "Ty Dunn";
 export const SITE_TAGLINE = "Builder, movie lover, and newsletter writer.";
 
 /**
+ * Paths to photos in /public/images/.
+ * Import these in pages/components so every image lives in one place.
+ * To add a new image: drop the file in public/images/, then add a key here.
+ */
+export const SITE_IMAGES = {
+	/** Home hero background — ornate theater with glowing screen */
+	heroTheater: "/images/theater1.jpg",
+} as const;
+
+/**
  * ============================================================
  * NEWSLETTER FORM ACTION — SWAP THIS WHEN YOU PICK A PROVIDER
  * ============================================================

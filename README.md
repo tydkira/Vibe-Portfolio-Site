@@ -1,22 +1,22 @@
 # Personal Portfolio + Movie Newsletter
 
-A simple static portfolio built with [Astro](https://astro.build).  
-Goals: introduce who you are, show your work, and get visitors to subscribe to your movie newsletter.
+A simple static site built with [Astro](https://astro.build).  
+Goals: introduce who you are, share a movie-watching diary, and get visitors to subscribe to your movie newsletter.
 
 ## Tech
 
 - **Astro** (static HTML output — Cloudflare Pages friendly)
 - **Plain CSS** with CSS variables (no Tailwind)
-- **Content collections** — projects are Markdown files
+- **Content collections** — diary entries are Markdown files
 - **No UI framework** (no React/Vue) unless you add one later
 
 ## Pages
 
 | URL | Purpose |
 | --- | --- |
-| `/` | Home — intro, featured projects, signup |
+| `/` | Home — intro, recent diary entries, signup |
 | `/about` | Your story |
-| `/projects` | All projects from Markdown |
+| `/diary` | Movie-watching diary from Markdown |
 | `/newsletter` | Full pitch + signup |
 
 ## Local development
@@ -33,26 +33,29 @@ npm run build    # output goes to dist/
 npm run preview  # preview the production build locally
 ```
 
-## Adding a project
+## Adding a diary entry
 
-1. Create a new file in `src/content/projects/`, e.g. `my-cool-app.md`
+1. Create a new file in `src/content/diary/`, e.g. `past-lives.md`
 2. Fill in the frontmatter:
 
 ```md
 ---
-title: My Cool App
-description: One sentence about what it is.
-pubDate: 2026-04-01
+title: Quiet film, loud aftertaste
+film: Past Lives
+year: 2023
+description: A small story about timing that stuck with me.
+watchedDate: 2026-01-24
+where: Home / streaming
 tags:
-  - Astro
-url: https://example.com
+  - Drama
+  - First watch
 draft: false
 ---
 
-Write the longer project story here in Markdown.
+Write the longer watching notes here in Markdown.
 ```
 
-3. Save — it shows up on `/projects` automatically after refresh/rebuild.
+3. Save — it shows up on `/diary` automatically after refresh/rebuild.
 
 ## Connecting the newsletter form
 

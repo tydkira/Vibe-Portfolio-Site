@@ -1,22 +1,22 @@
 ---
 /**
  * Home page (/)
- * Goals: introduce who you are, show recent work, and convert to newsletter signup.
+ * Goals: introduce who you are, share recent watches, and convert to newsletter signup.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SignupForm from "../components/SignupForm.astro";
-import { SITE_NAME } from "../constants/site";
+import { SITE_NAME, SITE_IMAGES } from "../constants/site";
 import { getCollection } from "astro:content";
 
-// Pull published projects, newest first, show just a few on the home page
-const projects = (await getCollection("projects", ({ data }) => !data.draft))
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+// Pull published diary entries, newest first, show just a few on the home page
+const entries = (await getCollection("diary", ({ data }) => !data.draft))
+	.sort((a, b) => b.data.watchedDate.valueOf() - a.data.watchedDate.valueOf())
 	.slice(0, 3);
 ---
 
 <BaseLayout
 	title={SITE_NAME}
-	description="Personal portfolio and movie newsletter from Ty Dunn."
+	description="Personal movie diary and newsletter from Ty Dunn."
 >
 	{/* ---- Hero: one composition — brand, headline, support, CTAs ---- */}
 	<section class="hero">
@@ -24,34 +24,48 @@ const projects = (await getCollection("projects", ({ data }) => !data.draft))
 			<p class="hero__brand animate-fade">{SITE_NAME}</p>
 			<h1 class="animate-rise">Films worth your Friday night.</h1>
 			<p class="lede animate-rise-delay">
-				I build things on the web and write a short movie newsletter —
+				I keep a short diary of what I watch and write a movie newsletter —
 				clear picks, no algorithm noise.
 			</p>
 			<div class="button-row animate-rise-delay">
 				<a class="button button--primary" href="/newsletter">Join the newsletter</a>
-				<a class="button button--ghost" href="/projects">See projects</a>
+				<a class="button button--ghost" href="/diary">Read the diary</a>
 			</div>
 		</div>
-		{/* Full-bleed atmospheric plane behind the hero text */}
-		<div class="hero__atmosphere" aria-hidden="true"></div>
+		{/* Full-bleed theater photo behind the hero text */}
+		<div class="hero__atmosphere" aria-hidden="true">
+			<img
+				class="hero__image"
+				src={SITE_IMAGES.heroTheater}
+				alt=""
+				width="5000"
+				height="3333"
+				decoding="async"
+				fetchpriority="high"
+			/>
+		</div>
 	</section>
 
-	{/* ---- Featured projects ---- */}
+	{/* ---- Recent diary entries ---- */}
 	<section class="section">
 		<div class="container">
-			<span class="eyebrow">Selected work</span>
-			<h2>Recent projects</h2>
-			<p class="lede">A few things I have shipped or am actively shaping.</p>
+			<span class="eyebrow">Watching log</span>
+			<h2>From the diary</h2>
+			<p class="lede">A few recent movie nights — what I saw and how it landed.</p>
 
-			<ul class="project-list">
+			<ul class="diary-list">
 				{
-					projects.map((project) => (
+					entries.map((entry) => (
 						<li>
-							<a href={`/projects/${project.id}`}>
-								<h3>{project.data.title}</h3>
-								<p>{project.data.description}</p>
+							<a href={`/diary/${entry.id}`}>
+								<h3>{entry.data.title}</h3>
+								<p class="diary-film">
+									{entry.data.film}
+									{entry.data.year ? ` (${entry.data.year})` : ""}
+								</p>
+								<p>{entry.data.description}</p>
 								<div class="tag-row">
-									{project.data.tags.map((tag) => (
+									{entry.data.tags.map((tag) => (
 										<span class="tag">{tag}</span>
 									))}
 								</div>
@@ -62,7 +76,7 @@ const projects = (await getCollection("projects", ({ data }) => !data.draft))
 			</ul>
 
 			<p style="margin-top: 1.25rem;">
-				<a href="/projects">View all projects →</a>
+				<a href="/diary">View the full diary →</a>
 			</p>
 		</div>
 	</section>
@@ -115,35 +129,50 @@ const projects = (await getCollection("projects", ({ data }) => !data.draft))
 		margin-bottom: var(--space-md);
 	}
 
-	/* Full-bleed brand yellow plane with a soft warm wash */
+	/* Full-bleed theater photo with a forest wash so text stays readable */
 	.hero__atmosphere {
 		position: absolute;
 		inset: 0;
 		z-index: 0;
-		background:
-			radial-gradient(ellipse 70% 80% at 85% 40%, rgba(232, 163, 14, 0.22), transparent 60%),
-			linear-gradient(180deg, #355e3b 0%, #2a4a2f 100%);
+		overflow: hidden;
 	}
 
-	/* Soft moving light — presence without noise */
+	.hero__image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center 40%;
+		/* Subtle zoom so the image feels alive */
+		animation: hero-zoom 18s var(--ease-out) infinite alternate;
+	}
+
+	/* Tint + vignette: keep brand greens and protect heading contrast */
 	.hero__atmosphere::after {
 		content: "";
 		position: absolute;
-		inset: -20%;
-		background: radial-gradient(
-			circle at 70% 40%,
-			rgba(255, 255, 255, 0.28),
-			transparent 45%
-		);
-		animation: drift 14s var(--ease-out) infinite alternate;
+		inset: 0;
+		background:
+			linear-gradient(
+				90deg,
+				rgba(42, 74, 47, 0.88) 0%,
+				rgba(42, 74, 47, 0.62) 42%,
+				rgba(53, 94, 59, 0.35) 100%
+			),
+			linear-gradient(
+				180deg,
+				rgba(42, 74, 47, 0.35) 0%,
+				transparent 40%,
+				rgba(42, 74, 47, 0.55) 100%
+			),
+			radial-gradient(ellipse 70% 80% at 85% 40%, rgba(232, 163, 14, 0.14), transparent 60%);
 	}
 
-	@keyframes drift {
+	@keyframes hero-zoom {
 		from {
-			transform: translate3d(-2%, -1%, 0) scale(1);
+			transform: scale(1);
 		}
 		to {
-			transform: translate3d(3%, 2%, 0) scale(1.05);
+			transform: scale(1.06);
 		}
 	}
 
@@ -169,7 +198,7 @@ const projects = (await getCollection("projects", ({ data }) => !data.draft))
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.hero__atmosphere::after {
+		.hero__image {
 			animation: none;
 		}
 	}

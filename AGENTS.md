@@ -14,7 +14,7 @@ Guidance for AI agents (and humans) working on this repo.
 | Framework | Astro (static output) |
 | UI frameworks | None — no React/Vue/Svelte unless truly required |
 | Styling | Plain CSS + CSS variables in `src/styles/global.css` (no Tailwind) |
-| Projects content | Astro content collection — Markdown files in `src/content/projects/` |
+| Diary content | Astro content collection — Markdown files in `src/content/diary/` |
 | Hosting target | Cloudflare Pages (free plan) — keep the build fully static |
 | Version control | Git — prefer a commit after each major step when the user asks |
 
@@ -64,16 +64,17 @@ src/
     Header.astro
     Footer.astro             # Includes compact SignupForm
     SignupForm.astro         # Reusable newsletter form (no backend yet)
-  content.config.ts          # Projects collection schema
-  content/projects/*.md      # One Markdown file per project
+  content.config.ts          # Diary collection schema
+  content/diary/*.md         # One Markdown file per watching entry
   pages/
     index.astro              # Home
     about.astro
     newsletter.astro         # Full pitch page
-    projects/index.astro
-    projects/[id].astro      # Project detail from content collection
+    diary/index.astro
+    diary/[id].astro         # Diary entry from content collection
 public/
   fonts/                     # Local Khand + Hind web fonts (+ OFL licenses)
+  images/                    # Site photos (referenced via SITE_IMAGES)
   _headers                   # Cloudflare Pages security headers
 ```
 
@@ -119,10 +120,10 @@ Local Fontshare fonts (not Google Fonts):
 
 | Route | File | Purpose |
 | --- | --- | --- |
-| `/` | `src/pages/index.astro` | Intro, featured projects, signup |
+| `/` | `src/pages/index.astro` | Intro, recent diary entries, signup |
 | `/about` | `src/pages/about.astro` | Bio / story |
-| `/projects` | `src/pages/projects/index.astro` | All projects |
-| `/projects/[id]` | `src/pages/projects/[id].astro` | Single project |
+| `/diary` | `src/pages/diary/index.astro` | All movie-watching diary entries |
+| `/diary/[id]` | `src/pages/diary/[id].astro` | Single diary entry |
 | `/newsletter` | `src/pages/newsletter.astro` | Full newsletter pitch + signup |
 
 ### Newsletter page order (keep this)
@@ -151,29 +152,34 @@ When connecting Beehiiv / Kit / Substack / Buttondown later:
 2. Add any required hidden fields inside `SignupForm.astro` per provider docs.
 3. Keep accessible label, `type="email"`, `required`, focus, and error states.
 
-## Projects content collection
+## Diary content collection
 
 Defined in `src/content.config.ts`. Schema fields:
 
-- `title` (string)
-- `description` (string)
-- `pubDate` (date)
-- `url` (optional URL)
+- `title` (string) — short headline for the entry
+- `film` (string) — the movie watched
+- `description` (string) — one-line takeaway
+- `watchedDate` (date)
+- `year` (optional number) — film release year
+- `where` (optional string) — theater, home, streaming, etc.
 - `tags` (string array, default `[]`)
 - `draft` (boolean, default `false`)
 
-**To add a project:** create a new `.md` file in `src/content/projects/` with frontmatter + Markdown body. No page template changes needed.
+**To add a diary entry:** create a new `.md` file in `src/content/diary/` with frontmatter + Markdown body. No page template changes needed.
 
 Example frontmatter:
 
 ```md
 ---
-title: My Cool App
-description: One sentence about what it is.
-pubDate: 2026-04-01
+title: Quiet film, loud aftertaste
+film: Past Lives
+year: 2023
+description: A small story about timing that stuck with me.
+watchedDate: 2026-01-24
+where: Home / streaming
 tags:
-  - Astro
-url: https://example.com
+  - Drama
+  - First watch
 draft: false
 ---
 ```
